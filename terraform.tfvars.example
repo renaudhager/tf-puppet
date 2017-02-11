@@ -1,0 +1,15 @@
+#
+# PRIVATE VARIABLES
+#
+
+# AWS Credentials
+access_key          = "{YOUR_AWS_ACCESS_KEY}"
+secret_key          = "{YOUR_AWS_SECRET_KEY}"
+
+#
+# Remote state file storage information
+#
+
+# Storage information about vpc
+vpc_rs_bucket = "{S3_BUCKET}"
+vpc_rs_key    = "{S3_KEY}"
