@@ -16,10 +16,38 @@ data "template_file" "puppetca" {
 # Templates for puppetmaster
 #
 data "template_file" "puppetmaster" {
-  template = "${file("cloudinit/default.yml")}"
+  template = "${file("cloudinit/puppetmaster.yml")}"
 
   vars {
     hostname               = "puppetmaster-01"
+    puppet_agent_version   = "${var.puppet_agent_version}"
+    puppet_server_hostname = "${var.puppet_ca_hostname}"
+    tld                    = "${var.tld}"
+  }
+}
+
+#
+# Templates for puppetdb pgsql host
+#
+data "template_file" "puppetdb_pgsql" {
+  template = "${file("cloudinit/default.yml")}"
+
+  vars {
+    hostname               = "puppetdb-pgsql-01"
+    puppet_agent_version   = "${var.puppet_agent_version}"
+    puppet_server_hostname = "${var.puppet_ca_hostname}"
+    tld                    = "${var.tld}"
+  }
+}
+
+#
+# Templates for puppetdb host
+#
+data "template_file" "puppetdb" {
+  template = "${file("cloudinit/default.yml")}"
+
+  vars {
+    hostname               = "puppetdb-01"
     puppet_agent_version   = "${var.puppet_agent_version}"
     puppet_server_hostname = "${var.puppet_ca_hostname}"
     tld                    = "${var.tld}"

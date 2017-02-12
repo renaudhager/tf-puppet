@@ -21,6 +21,8 @@ variable "bastion_rs_key"    {}
 #
 variable "instance_puppetca"     { default = "t2.medium" }
 variable "instance_puppetmaster" { default = "t2.small" }
+variable "instance_pgsql"        { default = "t2.medium" }
+variable "instance_puppetdb"     { default = "t2.small" }
 
 #
 # Puppet stuff
