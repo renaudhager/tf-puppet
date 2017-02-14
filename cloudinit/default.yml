@@ -11,5 +11,6 @@ runcmd:
   # We wait to be sure that puppet CA is ready
   - 'sleep 300'
   - '/opt/puppetlabs/bin/puppet agent -tv --server=${puppet_server_hostname}.${tld} --certname=${hostname}.${tld}'
+  - 'sleep 60'
   - '/opt/puppetlabs/bin/puppet agent -tv --server=${puppet_server_hostname}.${tld} --certname=${hostname}.${tld}'
 final_message: "The system is up, after $UPTIME seconds"
