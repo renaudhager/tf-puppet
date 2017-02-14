@@ -43,18 +43,3 @@ resource "aws_route53_record" "nginx" {
   records = ["${element(aws_instance.nginx.*.private_ip, count.index)}"]
   count   = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
 }
-
-#
-# output
-#
-// output "puppetca_dns_record" {
-//   value = "${aws_route53_record.puppetca.records}"
-// }
-//
-// output "puppetdb_pgsql_record" {
-//   value = "${aws_route53_record.puppetdb_pgsql.records}"
-// }
-
-// output "puppetdb_record" {
-//   value = "${element(aws_route53_record.puppetdb.*.records)}"
-// }
