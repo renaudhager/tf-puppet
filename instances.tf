@@ -9,9 +9,6 @@ resource "aws_instance" "puppetca" {
   vpc_security_group_ids      = ["${aws_security_group.puppet.id}"]
   user_data                   = "${data.template_file.puppetca.rendered}"
   associate_public_ip_address = false
-  lifecycle {
-    ignore_changes = ["user_data"]
-  }
   tags {
     Name  = "${var.puppet_ca_hostname}"
     Owner = "${var.owner}"
