@@ -90,7 +90,7 @@ resource "aws_instance" "nginx" {
   vpc_security_group_ids      = ["${aws_security_group.nginx.id}"]
   user_data                   = "${element(data.template_file.nginx.*.rendered, count.index)}"
   associate_public_ip_address = false
-  depends_on                  = ["aws_instance.puppetca"]
+  depends_on                  = ["aws_instance.puppetdb"]
   # This does not work :-(
   #count                       = "${length( split( ",", data.terraform_remote_state.vpc_rs.azs ) )}"
   count                       = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
@@ -126,9 +126,3 @@ output "puppetdb-pgsql_fqdn" {
 output "puppetdb-pgsql_ip" {
   value = "${aws_instance.puppetdb_pgsql.private_ip}"
 }
-
-
-// output "puppetmaster" {
-//   value = "puppetmaster-${count.index+1}.${var.tld}"
-//   count = "${length( split( ",", lookup( data.terraform_remote_state.vpc_rs.azs, var.region ) ) )}"
-// }

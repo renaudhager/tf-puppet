@@ -3,8 +3,9 @@
 #
 
 resource "aws_elb" "puppet_elb" {
-  name    = "${var.ownerv2}-puppet-elb"
-  subnets = ["${split( ",", data.terraform_remote_state.vpc_rs.public_subnet)}"]
+  name       = "${var.ownerv2}-puppet-elb"
+  subnets    = ["${split( ",", data.terraform_remote_state.vpc_rs.public_subnet)}"]
+  depends_on = ["aws_instance.nginx"]
 
   listener {
     instance_port      = 80
