@@ -12,7 +12,7 @@ runcmd:
   - '/opt/puppetlabs/puppet/bin/puppet apply /tmp/puppet-bootstrap/puppetserver.pp --debug'
   # We wait to be sure that puppet CA is ready
   - 'sleep 300'
-  - '/opt/puppetlabs/bin/puppet agent -tv --server=${puppet_server_hostname}.${tld} --certname=${hostname}.${tld}'
+  - '/opt/puppetlabs/bin/puppet agent -tv --server=${puppet_server_hostname}.${tld} --certname=${hostname}.${tld} --environment=${environment}'
   - 'sleep 60'
-  - '/opt/puppetlabs/bin/puppet agent -tv --server=${puppet_server_hostname}.${tld} --certname=${hostname}.${tld}'
+  - '/opt/puppetlabs/bin/puppet agent -tv --server=${puppet_server_hostname}.${tld} --certname=${hostname}.${tld} --environment=${environment}'
 final_message: "The system is up, after $UPTIME seconds"

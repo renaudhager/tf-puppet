@@ -9,6 +9,7 @@ data "template_file" "puppetca" {
     puppet_agent_version  = "${var.puppet_agent_version}"
     puppet_server_version = "${var.puppet_server_version}"
     tld                   = "${var.tld}"
+    environment           = "${var.puppet_bootstrap_env}"
   }
 }
 
@@ -24,6 +25,7 @@ data "template_file" "puppetmaster" {
     puppet_agent_version   = "${var.puppet_agent_version}"
     puppet_server_hostname = "${var.puppet_ca_hostname}"
     tld                    = "${var.tld}"
+    environment            = "${var.puppet_bootstrap_env}"
   }
 }
 
@@ -38,6 +40,7 @@ data "template_file" "puppetdb_pgsql" {
     puppet_agent_version   = "${var.puppet_agent_version}"
     puppet_server_hostname = "${var.puppet_ca_hostname}"
     tld                    = "${var.tld}"
+    environment            = "${var.puppet_bootstrap_env}"
   }
 }
 
@@ -53,6 +56,7 @@ data "template_file" "puppetdb" {
     puppet_agent_version   = "${var.puppet_agent_version}"
     puppet_server_hostname = "${var.puppet_ca_hostname}"
     tld                    = "${var.tld}"
+    environment            = "${var.puppet_bootstrap_env}"
   }
 }
 
@@ -68,5 +72,6 @@ data "template_file" "nginx" {
     puppet_agent_version   = "${var.puppet_agent_version}"
     puppet_server_hostname = "${var.puppet_ca_hostname}"
     tld                    = "${var.tld}"
+    environment            = "${var.puppet_bootstrap_env}"
   }
 }
