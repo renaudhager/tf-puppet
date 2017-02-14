@@ -107,6 +107,22 @@ resource "aws_security_group" "puppetdb" {
     security_groups = ["${data.terraform_remote_state.bastion_rs.sg_bastion}"]
   }
 
+  # Allow puppetboard trafic remote acces
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  # Allow puppetboard trafic remote acces
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
   # Allow puppet traffic
   ingress {
     from_port   = 8081
@@ -137,6 +153,85 @@ resource "aws_security_group" "puppetdb" {
   }
 }
 
+# Security group for access to nginx resources
+resource "aws_security_group" "nginx" {
+  name        = "${var.owner}_nginx"
+  description = "Allow all inbound traffic to nginx"
+  vpc_id      = "${data.terraform_remote_state.vpc_rs.vpc}"
+
+  # Allow SSH remote acces
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    security_groups = ["${data.terraform_remote_state.bastion_rs.sg_bastion}"]
+  }
+
+  # Allow http traffic
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  # Allow https traffic
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  # Allow ICMP traffic
+  ingress {
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  # Allow outgoing traffic
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags {
+    Name  = "${var.owner}_nginx"
+    owner = "${var.owner}"
+  }
+}
+
+# Security group for access to elb resources
+resource "aws_security_group" "puppet_elb" {
+  name        = "${var.owner}_puppet_elb"
+  description = "Allow consul traffic to ELB"
+  vpc_id      = "${data.terraform_remote_state.vpc_rs.vpc}"
+
+  # Allow HTTP traffic
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+    cidr_blocks    = ["0.0.0.0/0"]
+  }
+  # Allow to outgoing connection.
+  egress {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags {
+    Name  = "${var.owner}_puppet_elb"
+    owner = "${var.owner}"
+  }
+
+}
+
 #
 # Outputs
 #
@@ -151,4 +246,8 @@ output "sg_puppetdb_pgsql" {
 
 output "sg_puppetdb" {
   value = "${aws_security_group.puppetdb.id}"
+}
+
+output "sg_puppet_elb" {
+  value = "${aws_security_group.puppet_elb.id}"
 }

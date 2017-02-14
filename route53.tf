@@ -11,10 +11,11 @@ resource "aws_route53_record" "puppetca" {
 
 resource "aws_route53_record" "puppetmaster" {
   zone_id = "${data.terraform_remote_state.vpc_rs.default_route53_zone}"
-  name    = "puppetmaster-01"
+  name    = "puppetmaster-0${count.index+1}"
   type    = "A"
   ttl     = "300"
-  records = ["${aws_instance.puppetmaster.*.private_ip}"]
+  records = ["${element(aws_instance.puppetmaster.*.private_ip, count.index)}"]
+  count   = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
 }
 
 resource "aws_route53_record" "puppetdb_pgsql" {
@@ -27,23 +28,33 @@ resource "aws_route53_record" "puppetdb_pgsql" {
 
 resource "aws_route53_record" "puppetdb" {
   zone_id = "${data.terraform_remote_state.vpc_rs.default_route53_zone}"
-  name    = "puppetdb-01"
+  name    = "puppetdb-0${count.index+1}"
   type    = "A"
   ttl     = "300"
-  records = ["${aws_instance.puppetdb.*.private_ip}"]
+  records = ["${element(aws_instance.puppetdb.*.private_ip, count.index)}"]
+  count   = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
+}
+
+resource "aws_route53_record" "nginx" {
+  zone_id = "${data.terraform_remote_state.vpc_rs.default_route53_zone}"
+  name    = "nginx-0${count.index+1}"
+  type    = "A"
+  ttl     = "300"
+  records = ["${element(aws_instance.nginx.*.private_ip, count.index)}"]
+  count   = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
 }
 
 #
 # output
 #
-output "puppetca_dns_record" {
-  value = "${aws_route53_record.puppetca.records}"
-}
+// output "puppetca_dns_record" {
+//   value = "${aws_route53_record.puppetca.records}"
+// }
+//
+// output "puppetdb_pgsql_record" {
+//   value = "${aws_route53_record.puppetdb_pgsql.records}"
+// }
 
-output "puppetdb_pgsql_record" {
-  value = "${aws_route53_record.puppetdb_pgsql.records}"
-}
-
-output "puppetdb_record" {
-  value = "${aws_route53_record.puppetdb.records}"
-}
+// output "puppetdb_record" {
+//   value = "${element(aws_route53_record.puppetdb.*.records)}"
+// }

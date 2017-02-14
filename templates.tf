@@ -17,9 +17,10 @@ data "template_file" "puppetca" {
 #
 data "template_file" "puppetmaster" {
   template = "${file("cloudinit/puppetmaster.yml")}"
+  count    = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
 
   vars {
-    hostname               = "puppetmaster-01"
+    hostname               = "puppetmaster-0${count.index+1}"
     puppet_agent_version   = "${var.puppet_agent_version}"
     puppet_server_hostname = "${var.puppet_ca_hostname}"
     tld                    = "${var.tld}"
@@ -45,9 +46,25 @@ data "template_file" "puppetdb_pgsql" {
 #
 data "template_file" "puppetdb" {
   template = "${file("cloudinit/default.yml")}"
+  count    = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
 
   vars {
-    hostname               = "puppetdb-01"
+    hostname               = "puppetdb-0${count.index+1}"
+    puppet_agent_version   = "${var.puppet_agent_version}"
+    puppet_server_hostname = "${var.puppet_ca_hostname}"
+    tld                    = "${var.tld}"
+  }
+}
+
+#
+# Templates for nginx host
+#
+data "template_file" "nginx" {
+  template = "${file("cloudinit/default.yml")}"
+  count    = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
+
+  vars {
+    hostname               = "nginx-0${count.index+1}"
     puppet_agent_version   = "${var.puppet_agent_version}"
     puppet_server_hostname = "${var.puppet_ca_hostname}"
     tld                    = "${var.tld}"
