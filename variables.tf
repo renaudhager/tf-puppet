@@ -34,8 +34,8 @@ variable "puppet_server_version" { default = "2.4.0" }
 variable "puppet_ca_hostname"    { default = "puppetca-01" }
 variable "puppet_bootstrap_env"  { default = "bootstrap" }
 
-# There is bug for now we cannot use output from data.terraform_remote_state
-# in count.
+# No more needed
+# TODO:  use data terraform_remote_state
 variable "azs" {
   default = {
     "eu-west-1"      = "a,b,c"
