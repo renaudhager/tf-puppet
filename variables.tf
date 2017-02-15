@@ -47,3 +47,14 @@ variable "azs" {
     "ap-southeast-2" = "a,b,c"
   }
 }
+
+#
+# output
+#
+output "puppet_agent_version" {
+  value = "${var.puppet_agent_version}"
+}
+
+output "puppet_bootstrap_env" {
+  value = "${var.puppet_bootstrap_env}"
+}
