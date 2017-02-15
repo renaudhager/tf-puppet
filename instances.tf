@@ -49,7 +49,7 @@ resource "aws_instance" "puppetdb" {
   #count                       = "${length( split( ",", data.terraform_remote_state.vpc_rs.azs ) )}"
   count                       = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
   tags {
-    Name  = "puppetdb-${count.index+1}"
+    Name  = "puppetdb-0${count.index+1}"
     Owner = "${var.owner}"
   }
 }
@@ -71,7 +71,7 @@ resource "aws_instance" "puppetmaster" {
   #count                       = "${length( split( ",", data.terraform_remote_state.vpc_rs.azs ) )}"
   count                       = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
   tags {
-    Name  = "puppetmaster-${count.index+1}"
+    Name  = "puppetmaster-0${count.index+1}"
     Owner = "${var.owner}"
   }
 }
@@ -92,7 +92,7 @@ resource "aws_instance" "nginx" {
   #count                       = "${length( split( ",", data.terraform_remote_state.vpc_rs.azs ) )}"
   count                       = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
   tags {
-    Name  = "nginx-${count.index+1}"
+    Name  = "nginx-0${count.index+1}"
     Owner = "${var.owner}"
   }
 }
