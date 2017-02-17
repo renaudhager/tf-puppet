@@ -220,6 +220,14 @@ resource "aws_security_group" "nginx" {
     cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
   }
 
+  # Allow puppetdb traffic
+  ingress {
+    from_port   = 8081
+    to_port     = 8081
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
   # Allow ICMP traffic
   ingress {
     from_port   = -1
