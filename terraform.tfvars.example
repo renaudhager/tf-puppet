@@ -13,3 +13,7 @@ secret_key          = "{YOUR_AWS_SECRET_KEY}"
 # Storage information about vpc
 vpc_rs_bucket = "{S3_BUCKET}"
 vpc_rs_key    = "{S3_KEY}"
+
+# Storage information about bastion module
+bastion_rs_bucket = "{S3_BUCKET}"
+bastion_rs_key    = "{S3_KEY}"
