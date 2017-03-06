@@ -35,6 +35,14 @@ resource "aws_route53_record" "puppetdb" {
   count   = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
 }
 
+// resource "aws_route53_record" "puppetdb-04" {
+//   zone_id = "${data.terraform_remote_state.vpc_rs.default_route53_zone}"
+//   name    = "puppetdb-04"
+//   type    = "A"
+//   ttl     = "300"
+//   records = ["${aws_instance.puppetdb-04.private_ip}"]
+// }
+
 resource "aws_route53_record" "nginx" {
   zone_id = "${data.terraform_remote_state.vpc_rs.default_route53_zone}"
   name    = "nginx-0${count.index+1}"

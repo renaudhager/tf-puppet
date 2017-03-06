@@ -54,6 +54,23 @@ resource "aws_instance" "puppetdb" {
   }
 }
 
+# For demo purpose
+// resource "aws_instance" "puppetdb-04" {
+//   ami                         = "${data.aws_ami.centos7_ami.id}"
+//   instance_type               = "${var.instance_puppetdb}"
+//   subnet_id                   = "${element(split( ",", data.terraform_remote_state.vpc_rs.private_subnet), 0)}"
+//   key_name                    = "${var.ssh_key_name}"
+//   vpc_security_group_ids      = ["${aws_security_group.puppetdb.id}"]
+//   user_data                   = "${data.template_file.puppetdb-04.0.rendered}"
+//   associate_public_ip_address = false
+//   depends_on                  = ["aws_instance.puppetdb_pgsql"]
+//
+//   tags {
+//     Name  = "puppetdb-04"
+//     Owner = "${var.owner}"
+//   }
+// }
+
 
 #
 # puppet master instance

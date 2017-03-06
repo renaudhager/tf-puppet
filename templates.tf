@@ -61,6 +61,22 @@ data "template_file" "puppetdb" {
 }
 
 #
+# Templates for puppetdb demo host
+#
+// data "template_file" "puppetdb-04" {
+//   template = "${file("cloudinit/default.yml")}"
+//
+//   vars {
+//     hostname               = "puppetdb-04"
+//     puppet_agent_version   = "${var.puppet_agent_version}"
+//     puppet_server_hostname = "${var.puppet_ca_hostname}"
+//     tld                    = "${var.tld}"
+//     environment            = "${var.puppet_bootstrap_env}"
+//   }
+// }
+
+
+#
 # Templates for nginx host
 #
 data "template_file" "nginx" {
