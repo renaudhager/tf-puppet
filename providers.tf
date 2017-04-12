@@ -7,6 +7,12 @@ provider "aws" {
   region     = "${var.region}"
 }
 
+# Configure the Consul provider
+provider "consul" {
+    address = "consul:80"
+    datacenter = "${data.terraform_remote_state.vpc_rs.vdc}"
+}
+
 output "region" {
   value = "${var.region}"
 }

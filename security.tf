@@ -100,6 +100,35 @@ resource "aws_security_group" "puppetdb_pgsql" {
       ]
   }
 
+  # Allow consul traffic
+  ingress {
+    from_port   = 8500
+    to_port     = 8500
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  ingress {
+    from_port   = 8400
+    to_port     = 8400
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  ingress {
+    from_port   = 8400
+    to_port     = 8400
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  ingress {
+    from_port   = 8300
+    to_port     = 8305
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
   # Allow ICMP traffic
   ingress {
     from_port   = -1
@@ -156,6 +185,35 @@ resource "aws_security_group" "puppetdb" {
   ingress {
     from_port   = 8081
     to_port     = 8081
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  # Allow consul traffic
+  ingress {
+    from_port   = 8500
+    to_port     = 8500
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  ingress {
+    from_port   = 8400
+    to_port     = 8400
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  ingress {
+    from_port   = 8400
+    to_port     = 8400
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  ingress {
+    from_port   = 8300
+    to_port     = 8305
     protocol    = "tcp"
     cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
   }
@@ -224,6 +282,35 @@ resource "aws_security_group" "nginx" {
   ingress {
     from_port   = 8081
     to_port     = 8081
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  # Allow consul traffic
+  ingress {
+    from_port   = 8500
+    to_port     = 8500
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  ingress {
+    from_port   = 8400
+    to_port     = 8400
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  ingress {
+    from_port   = 8400
+    to_port     = 8400
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
+  }
+
+  ingress {
+    from_port   = 8300
+    to_port     = 8305
     protocol    = "tcp"
     cidr_blocks = ["${data.terraform_remote_state.vpc_rs.vpc_cidr_block}"]
   }
