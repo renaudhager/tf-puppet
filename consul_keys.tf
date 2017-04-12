@@ -65,3 +65,60 @@ resource "consul_keys" "puppetdb-lb_signing" {
         delete = true
     }
 }
+
+
+#
+# Consul key for consul hiera backend in Puppet
+#
+resource "consul_keys" "puppetca_hiera" {
+    datacenter = "${data.terraform_remote_state.vpc_rs.vdc}"
+
+    key {
+        path   = "${var.consul_hiera_path}/${var.puppet_ca_hostname}.${var.tld}/role"
+        value  = "puppetca"
+        delete = true
+    }
+}
+
+resource "consul_keys" "puppetdb_pgsql_hiera" {
+    datacenter = "${data.terraform_remote_state.vpc_rs.vdc}"
+
+    key {
+        path   = "${var.consul_hiera_path}/puppetdb-pgsql-01.${var.tld}/role"
+        value  = "puppetdb-pgsql"
+        delete = true
+    }
+}
+
+resource "consul_keys" "puppetdb_hiera" {
+    datacenter = "${data.terraform_remote_state.vpc_rs.vdc}"
+    count      = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
+
+    key {
+        path = "${var.consul_hiera_path}/puppetdb-0${count.index+1}.${var.tld}/role"
+        value = "puppetdb"
+        delete = true
+    }
+}
+
+resource "consul_keys" "puppetmaster_hiera" {
+    datacenter = "${data.terraform_remote_state.vpc_rs.vdc}"
+    count      = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
+    # Set signing key
+    key {
+        path = "${var.consul_hiera_path}/puppetmaster-0${count.index+1}.${var.tld}/role"
+        value = "puppetmaster"
+        delete = true
+    }
+}
+
+resource "consul_keys" "nginx_hiera" {
+    datacenter = "${data.terraform_remote_state.vpc_rs.vdc}"
+    count      = "${length( split( ",", lookup( var.azs, var.region ) ) )}"
+    # Set signing key
+    key {
+        path = "${var.consul_hiera_path}/nginx-0${count.index+1}.${var.tld}/role"
+        value = "nginx"
+        delete = true
+    }
+}
