@@ -2,13 +2,17 @@
 # puppet CA instance
 #
 resource "aws_instance" "puppetca" {
-  ami                         = "${data.aws_ami.centos7_ami.id}"
+  // ami                         = "${data.aws_ami.centos7_ami.id}"
+  ami                         = "ami-6a2d760f"
   instance_type               = "${var.instance_puppetca}"
   subnet_id                   = "${element(split( ",", data.terraform_remote_state.vpc_rs.private_subnet), 0)}"
   key_name                    = "${var.ssh_key_name}"
   vpc_security_group_ids      = ["${aws_security_group.puppet.id}"]
   user_data                   = "${data.template_file.puppetca.rendered}"
   associate_public_ip_address = false
+  lifecycle {
+    ignore_changes = ["ami"]
+  }
   tags {
     Name  = "${var.puppet_ca_hostname}"
     Owner = "${var.owner}"
@@ -19,7 +23,8 @@ resource "aws_instance" "puppetca" {
 # puppetdb db sql host
 #
 resource "aws_instance" "puppetdb_pgsql" {
-  ami                         = "${data.aws_ami.centos7_ami.id}"
+  // ami                         = "${data.aws_ami.centos7_ami.id}"
+  ami                         = "ami-6a2d760f"
   instance_type               = "${var.instance_pgsql}"
   subnet_id                   = "${element(split( ",", data.terraform_remote_state.vpc_rs.private_subnet), 1)}"
   key_name                    = "${var.ssh_key_name}"
@@ -37,7 +42,8 @@ resource "aws_instance" "puppetdb_pgsql" {
 # puppetdb db host
 #
 resource "aws_instance" "puppetdb" {
-  ami                         = "${data.aws_ami.centos7_ami.id}"
+  // ami                         = "${data.aws_ami.centos7_ami.id}"
+  ami                         = "ami-6a2d760f"
   instance_type               = "${var.instance_puppetdb}"
   subnet_id                   = "${element(split( ",", data.terraform_remote_state.vpc_rs.private_subnet), count.index)}"
   key_name                    = "${var.ssh_key_name}"
@@ -76,7 +82,8 @@ resource "aws_instance" "puppetdb" {
 # puppet master instance
 #
 resource "aws_instance" "puppetmaster" {
-  ami = "${data.aws_ami.centos7_ami.id}"
+  // ami = "${data.aws_ami.centos7_ami.id}"
+  ami                         = "ami-6a2d760f"
   instance_type               = "${var.instance_puppetmaster}"
   subnet_id                   = "${element(split( ",", data.terraform_remote_state.vpc_rs.private_subnet), count.index)}"
   key_name                    = "${var.ssh_key_name}"
@@ -97,7 +104,8 @@ resource "aws_instance" "puppetmaster" {
 # Nginx instances
 #
 resource "aws_instance" "nginx" {
-  ami = "${data.aws_ami.centos7_ami.id}"
+  // ami = "${data.aws_ami.centos7_ami.id}"
+  ami                         = "ami-6a2d760f"
   instance_type               = "${var.instance_nginx}"
   subnet_id                   = "${element(split( ",", data.terraform_remote_state.vpc_rs.private_subnet), count.index)}"
   key_name                    = "${var.ssh_key_name}"
